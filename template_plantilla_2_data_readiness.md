@@ -9,8 +9,8 @@
 - Integrante 2: Gonzalo Gaviño
 - Integrante 3: Giuseppe Del Negro
 
-**Fecha de entrega:** _______________
-**Tipo de IA del proyecto:** ML Tradicional — Clasificación supervisada (Visión Computacional / CNN)
+**Fecha de entrega:** 08/05/26
+**Tipo de IA del proyecto:** Combinación — Visión Computacional Supervisada (CNN) + Alerta de voz automatizada (TTS)
 
 ---
 
