@@ -50,16 +50,7 @@ Conductor adulto con daltonismo rojo-verde (deuteranopía o protanopía) que ope
 - [x] ML Tradicional — Clasificación
 - [ ] ML Tradicional — Regresión
 - [ ] ML Tradicional — Clustering
-<<<<<<< HEAD
 - [ ] Combinación
-=======
-- [x] Combinación GenAI + ML
-
-> *Aclaración: en este proyecto la combinación es Visión Computacional
-> Supervisada (CNN) para clasificación + Síntesis de Voz automatizada
-> (TTS) para comunicación del resultado. El componente TTS opera sobre
-> etiquetas predefinidas — no se utiliza un modelo de lenguaje generativo.*
->>>>>>> db3fdad (Plantilla 3 - correciones)
 
 ---
 
