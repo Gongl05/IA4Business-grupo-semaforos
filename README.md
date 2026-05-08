@@ -8,7 +8,7 @@
 
 ## Descripción del proyecto
 
-ChromaVía es un sistema de asistencia para conductores adultos con daltonismo rojo-verde (deuteranopía o protanopía) que operan vehículos privados en Lima Metropolitana. El sistema captura video desde una cámara fija montada en el vehículo, clasifica el estado del semáforo visible en tiempo real mediante una red neuronal convolucional (CNN), y emite una alerta de voz al conductor ("Semáforo en ROJO / VERDE / AMARILLO") cuando la predicción supera el umbral de confianza definido.
+SafeLight es un sistema de asistencia para conductores adultos con daltonismo rojo-verde (deuteranopía o protanopía) que operan vehículos privados en Lima Metropolitana. El sistema captura video desde una cámara fija montada en el vehículo, clasifica el estado del semáforo visible en tiempo real mediante una red neuronal convolucional (CNN), y emite una alerta de voz al conductor ("Semáforo en ROJO / VERDE / AMARILLO") cuando la predicción supera el umbral de confianza definido.
 
 **Tipo de IA:** ML Tradicional — Clasificación Supervisada (Visión Computacional / CNN)  
 **Arquitectura base:** MobileNetV2 con transfer learning  
