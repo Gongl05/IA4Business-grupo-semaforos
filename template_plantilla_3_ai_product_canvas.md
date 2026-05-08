@@ -57,10 +57,10 @@ para interpretar el estado de semáforos convencionales en tiempo real durante l
 ### 1.4 Tipo de IA
 
 - [ ] IA Generativa
-- [ ] ML Tradicional — Clasificación
+- [x] ML Tradicional — Clasificación
 - [ ] ML Tradicional — Regresión
 - [ ] ML Tradicional — Clustering
-- [x] Combinación — Visión Computacional Supervisada (ML/CNN) + Síntesis de voz automatizada (TTS)
+- [ ] Combinación
 
 ---
 
@@ -257,8 +257,8 @@ Marca con una X:
 
 - [ ] **Buy** — usar herramienta existente sin modificar
 - [ ] **Integrate** — conectar API de IA a flujo o interfaz propia
-- [ ] **Build** — entrenar modelo propio con datos del equipo
-- [x] **Combinación** — Build (modelo CNN) + Integrate (módulo TTS)
+- [x] **Build** — entrenar modelo propio con datos del equipo
+- [ ] **Combinación**
 
 **Justificación (obligatoria):**
 
@@ -271,8 +271,9 @@ el entorno visual de Lima. Las APIs de visión genérica (Google Vision, AWS Rek
 no ofrecen latencia <200ms para este caso de uso ni están calibradas para infraestructura
 semafórica latinoamericana. Se entrena una CNN propia con transfer learning sobre
 MobileNetV2 usando LISA + BSTLD + Brazilian UFU y fine-tuning con imágenes locales,
-viable en 7 semanas con Google Colab. El módulo TTS se integra con pyttsx3 (open source),
-evitando construir síntesis de voz desde cero.
+viable en 7 semanas con Google Colab. El módulo TTS (pyttsx3) es una biblioteca
+open-source determinista — no constituye un componente de IA que justifique
+una estrategia "Integrate" separada.
 ```
 
 ---

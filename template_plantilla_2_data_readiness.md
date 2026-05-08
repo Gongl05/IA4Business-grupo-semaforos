@@ -10,7 +10,7 @@
 - Integrante 3: Giuseppe Del Negro
 
 **Fecha de entrega:** 08/05/26
-**Tipo de IA del proyecto:** Combinación — Visión Computacional Supervisada (CNN) + Alerta de voz automatizada (TTS)
+**Tipo de IA del proyecto:** ML Tradicional — Clasificación Supervisada (Visión Computacional / CNN)
 
 ---
 

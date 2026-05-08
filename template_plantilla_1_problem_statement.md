@@ -106,48 +106,35 @@ Una solución de IA es necesaria porque el problema implica visión computaciona
 Marca con una X la opción elegida:
 
 - [ ] **IA Generativa** — el problema involucra lenguaje natural, conversación o generación de contenido
-- [ ] **ML Tradicional** — el problema requiere predecir, clasificar o segmentar con datos históricos
-- [X] **Combinación** — se necesita predecir Y comunicar/actuar sobre el resultado
+- [X] **ML Tradicional** — el problema requiere predecir, clasificar o segmentar con datos históricos
+- [ ] **Combinación** — se necesita predecir Y comunicar/actuar sobre el resultado
 
 ### Justificación de la elección
 > *¿Por qué este tipo de IA y no los otros dos? Argumenta en función del problema, no de la preferencia del equipo.*
 
 ```
-El problema tiene dos capas distintas: primero, detectar y clasificar el estado del semáforo desde una imagen (tarea de ML con visión computacional); segundo, comunicar esa información al usuario de forma accesible, clara y contextualizada (tarea de IA Generativa o síntesis de audio). Ninguno de los dos tipos por separado resuelve el problema completo.
-
-
+El problema requiere detectar y clasificar el estado del semáforo desde frames
+de video en tiempo real: tarea de clasificación supervisada con visión
+computacional (CNN). La comunicación del resultado al conductor mediante síntesis
+de voz (pyttsx3) es lógica de aplicación determinista sobre una de cuatro
+etiquetas fijas — no constituye un componente de IA Generativa. Un LLM añadiría
+latencia, variabilidad y costo innecesarios cuando la salida siempre es una de
+cuatro frases predefinidas. La IA Generativa no aplica porque el problema no
+involucra lenguaje natural abierto, conversación ni generación de contenido.
 ```
 
 ### Si elegiste ML Tradicional — especifica el tipo:
 
-- [ ] Supervisado — Clasificación *(ej: ¿este cliente se irá? ¿este email es spam?)*
+- [X] Supervisado — Clasificación *(ej: ¿este cliente se irá? ¿este email es spam?)*
 - [ ] Supervisado — Regresión *(ej: ¿cuánto venderemos este mes?)*
 - [ ] No Supervisado — Clustering *(ej: ¿qué segmentos de clientes tenemos?)*
 
 ### Si elegiste Combinación — describe el flujo:
 
 ```
-¿Qué hace el componente ML?
-Clasifica el estado del semáforo visible en el frame de cámara:
-rojo / amarillo / verde / semáforo no detectado. Opera mediante
-una CNN entrenada sobre datasets de semáforos vehiculares con
-inferencia por frame a baja latencia (<200ms).
-
-¿Qué hace el componente GenAI?
-Convierte la etiqueta de clasificación en una alerta de voz
-accionable emitida por el sistema de audio del vehículo o
-auricular del conductor. La alerta se activa automáticamente
-cada vez que el modelo detecta un cambio de estado o proximidad
-a una intersección semafórica.
-
-¿Cómo se conectan?
-La salida del modelo de clasificación (etiqueta + nivel de
-confianza) es el input del módulo de síntesis de voz. Si la
-confianza supera el umbral definido, el sistema emite la alerta.
-Si la confianza es insuficiente (semáforo no detectado o umbral
-no alcanzado), el sistema no emite alerta falsa — permanece en
-silencio para no generar ruido de señal.
-
+No aplica. El sistema usa únicamente ML Tradicional — Clasificación Supervisada.
+La síntesis de voz (pyttsx3) es lógica de aplicación determinista, no un
+componente de IA adicional.
 ```
 
 ---
