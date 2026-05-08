@@ -1,4 +1,4 @@
-# ChromaVía — Asistente de semáforos para conductores con daltonismo
+# SafeLight — Asistente de semáforos para conductores con daltonismo
 
 **Curso:** AD5018 Inteligencia Artificial para Negocios — UTEC  
 **Equipo:** Sebastian Sanchez · Gonzalo Gaviño · Giuseppe Del Negro  
