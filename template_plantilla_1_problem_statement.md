@@ -5,12 +5,12 @@
 ---
 
 **Equipo:**
-- Integrante 1: _______________________________________________
-- Integrante 2: _______________________________________________
-- Integrante 3: _______________________________________________
+- Integrante 1: Sebastian Sanchez
+- Integrante 2: Gonzalo Gaviño
+- Integrante 3: Giuseppe Del Negro
 
-**Fecha de entrega:** _______________
-**Versión del canvas:** _______________  *(v1, v2, etc. — actualizar si cambia)*
+**Fecha de entrega:** 08/05/26
+**Versión del canvas:** v3
 
 ---
 
@@ -20,10 +20,7 @@
 > *¿Quién sufre el problema? Sé específico: no "las empresas" sino "el jefe de ventas de una pyme retail".*
 
 ```
-Escribe aquí (2-3 líneas máximo):
-
-
-
+Conductores adultos con daltonismo rojo-verde (deuteranopía o protanopía) que operan vehículos privados en entornos urbanos de Lima Metropolitana y deben interpretar el estado de los semáforos convencionales en tiempo real para circular con seguridad y dentro del marco legal de tránsito.
 
 ```
 
@@ -33,9 +30,7 @@ Escribe aquí (2-3 líneas máximo):
 > *¿Qué está pasando exactamente? Describe la situación actual sin mencionar soluciones.*
 
 ```
-Escribe aquí (3-4 líneas máximo):
-
-
+Los conductores con daltonismo rojo-verde tienen dificultad para identificar el estado del semáforo solo por el color. En Lima, esto se agrava por factores como el sol directo, la garúa, halos de luz LED, congestión, semáforos horizontales o mala visibilidad. Por ello, suelen guiarse por la posición de la luz o el comportamiento del tráfico, pero estas estrategias pueden fallar en situaciones de poca visibilidad o decisiones rápidas.
 
 
 ```
@@ -46,10 +41,7 @@ Escribe aquí (3-4 líneas máximo):
 > *¿Por qué ocurre el problema? No el síntoma — la causa real.*
 
 ```
-Escribe aquí (2-3 líneas máximo):
-
-
-
+La normativa peruana de diseño semafórico no exige criterios de accesibilidad para personas con deficiencia en la percepción del color. El MTC mantiene el color como único código de señalización, sin obligar el uso de formas, símbolos o patrones. Esto traslada el riesgo de interpretación al conductor afectado.
 
 ```
 
@@ -59,10 +51,7 @@ Escribe aquí (2-3 líneas máximo):
 > *¿Qué pierde el usuario sin solución? Expresa en números cuando sea posible (tiempo, dinero, clientes, errores).*
 
 ```
-Escribe aquí (2-3 líneas máximo):
-
-
-
+En Lima Metropolitana y Callao habría aproximadamente 200,000 conductores con daltonismo rojo-verde, quienes pueden tardar entre 0.5 y 1.2 segundos más en identificar un semáforo. A 60 km/h, ese retraso implica avanzar entre 8 y 20 metros sin reacción efectiva. Esto aumenta el riesgo de siniestros, especialmente considerando que el incumplimiento de señales es una de las principales causas de accidentes viales.
 
 ```
 
@@ -74,10 +63,16 @@ Escribe aquí (2-3 líneas máximo):
 **"[Tipo de usuario] tiene dificultad para [acción específica] porque [causa raíz], lo que genera [consecuencia medible]."**
 
 ```
-Escribe aquí tu declaración completa:
-
-
-
+*"Los conductores adultos con daltonismo rojo-verde tienen
+dificultad para identificar de forma autónoma y en tiempo real
+el estado de los semáforos convencionales durante la conducción
+porque la normativa de diseño semafórico peruana no exige
+criterios de accesibilidad cromática, lo que genera un retraso
+de reacción de hasta 1.2 segundos ante señales críticas,
+incrementando el riesgo de infracciones involuntarias, colisiones
+y pérdida de autonomía de conducción segura para los
+aproximadamente 200,000 conductores afectados en Lima
+Metropolitana."*
 
 ```
 
@@ -89,20 +84,18 @@ Escribe aquí tu declaración completa:
 
 | Pregunta | SÍ / NO | Justificación (1 línea) |
 |---|---|---|
-| ¿Una hoja de cálculo o formulario resuelve esto? | | |
-| ¿El problema escala con volumen de datos o usuarios? | | |
-| ¿Hay un patrón repetitivo difícil de procesar manualmente? | | |
-| ¿El problema requiere generar contenido o razonar en lenguaje natural? | | |
-| ¿Necesitas predecir Y luego explicar o actuar sobre el resultado? | | |
+| ¿Una hoja de cálculo o formulario resuelve esto? | NO | El problema requiere clasificación de imagen en tiempo real desde una cámara vehicular bajo condiciones variables; ningún formulario puede procesar frames de video ni emitir alertas accionables en milisegundos |
+| ¿El problema escala con volumen de datos o usuarios? | SÍ | Mayor diversidad de condiciones lumínicas, tipos de semáforos, distritos y variantes de infraestructura urbana exige más datos de entrenamiento para que el modelo generalice correctamente |
+| ¿Hay un patrón repetitivo difícil de procesar manualmente? | SÍ | La detección del estado del semáforo desde frames de video es continua, sensible al contexto visual y completamente inabordable por un humano en tiempo real durante la conducción |
+| ¿El problema requiere generar contenido o razonar en lenguaje natural? | NO | La salida al usuario es una etiqueta predefinida convertida en alerta de voz mediante síntesis; no requiere generación libre ni razonamiento lingüístico abierto |
+| ¿Necesitas predecir Y luego explicar o actuar sobre el resultado? | SÍ | El sistema clasifica el estado del semáforo y esa clasificación activa inmediatamente una alerta de voz accionable para el conductor, sin intervención humana intermedia |
+
 
 **Conclusión del filtro:**
 > *¿Por qué la IA es la respuesta correcta y no otra solución más simple?*
 
 ```
-Escribe aquí (3-4 líneas):
-
-
-
+Una solución de IA es necesaria porque el problema implica visión computacional en tiempo real (detectar y clasificar el estado del semáforo desde cámara), combinado con generación de una respuesta comprensible para el usuario. Ninguna solución manual, formulario o regla fija puede adaptarse a las variaciones de luz, ángulo y contexto urbano que enfrenta el usuario en cada cruce.
 
 ```
 
@@ -114,15 +107,13 @@ Marca con una X la opción elegida:
 
 - [ ] **IA Generativa** — el problema involucra lenguaje natural, conversación o generación de contenido
 - [ ] **ML Tradicional** — el problema requiere predecir, clasificar o segmentar con datos históricos
-- [ ] **Combinación** — se necesita predecir Y comunicar/actuar sobre el resultado
+- [X] **Combinación** — se necesita predecir Y comunicar/actuar sobre el resultado
 
 ### Justificación de la elección
 > *¿Por qué este tipo de IA y no los otros dos? Argumenta en función del problema, no de la preferencia del equipo.*
 
 ```
-Escribe aquí (4-5 líneas):
-
-
+El problema tiene dos capas distintas: primero, detectar y clasificar el estado del semáforo desde una imagen (tarea de ML con visión computacional); segundo, comunicar esa información al usuario de forma accesible, clara y contextualizada (tarea de IA Generativa o síntesis de audio). Ninguno de los dos tipos por separado resuelve el problema completo.
 
 
 ```
@@ -137,13 +128,25 @@ Escribe aquí (4-5 líneas):
 
 ```
 ¿Qué hace el componente ML?
-
+Clasifica el estado del semáforo visible en el frame de cámara:
+rojo / amarillo / verde / semáforo no detectado. Opera mediante
+una CNN entrenada sobre datasets de semáforos vehiculares con
+inferencia por frame a baja latencia (<200ms).
 
 ¿Qué hace el componente GenAI?
-
+Convierte la etiqueta de clasificación en una alerta de voz
+accionable emitida por el sistema de audio del vehículo o
+auricular del conductor. La alerta se activa automáticamente
+cada vez que el modelo detecta un cambio de estado o proximidad
+a una intersección semafórica.
 
 ¿Cómo se conectan?
-
+La salida del modelo de clasificación (etiqueta + nivel de
+confianza) es el input del módulo de síntesis de voz. Si la
+confianza supera el umbral definido, el sistema emite la alerta.
+Si la confianza es insuficiente (semáforo no detectado o umbral
+no alcanzado), el sistema no emite alerta falsa — permanece en
+silencio para no generar ruido de señal.
 
 ```
 
@@ -155,10 +158,10 @@ Escribe aquí (4-5 líneas):
 
 | Pregunta de control | Respuesta |
 |---|---|
-| ¿El problema está descrito sin mencionar tecnología? | SÍ / NO |
-| ¿La declaración del problema sigue el formato exacto? | SÍ / NO |
-| ¿La elección del tipo de IA se justifica con el problema, no con la preferencia? | SÍ / NO |
-| ¿Todos los integrantes pueden explicar este canvas sin leerlo? | SÍ / NO |
+| ¿El problema está descrito sin mencionar tecnología? | SÍ |
+| ¿La declaración del problema sigue el formato exacto? | SÍ |
+| ¿La elección del tipo de IA se justifica con el problema, no con la preferencia? | SÍ |
+| ¿Todos los integrantes pueden explicar este canvas sin leerlo? | SÍ |
 
 > **Si alguna respuesta es NO → el canvas no está listo para entregar.**
 
