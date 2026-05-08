@@ -1,14 +1,14 @@
-# Resumen Ejecutivo — ChromaVía
+# Resumen Ejecutivo — SafeLight
 
 > **Curso:** AD5018 — Inteligencia Artificial para Negocios · UTEC
 > **Equipo:** Sebastian Sanchez · Gonzalo Gaviño · Giuseppe Del Negro
-> **Entregable:** PC1 — Semana 6 — Ciclo 2026-1
+> **Entregable:** PC1 — Semana 7 — Ciclo 2026-1
 
 ---
 
 ## 1. Identidad del MVP
 
-**Nombre:** ChromaVía
+**Nombre:** SafeLight
 
 **Usuario principal:** Conductor adulto con daltonismo rojo-verde (deuteranopía o protanopía) que opera un vehículo privado en entornos urbanos de Lima Metropolitana y requiere asistencia autónoma para interpretar el estado de semáforos convencionales en tiempo real durante la conducción. **Mercado potencial estimado: ~200,000 conductores** en Lima Metropolitana.
 
