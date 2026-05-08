@@ -27,7 +27,7 @@
 ### 1.1 Nombre del producto / MVP
 
 ```
-Nombre: ChromaVía
+Nombre: SafeLight
 ```
 
 ### 1.2 Problema que resuelve
