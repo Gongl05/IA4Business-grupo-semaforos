@@ -36,7 +36,6 @@ Las plantillas siguen el orden de las fases del Framework PROMPT. Cada una debe 
 | Plantilla 1 — Problem Statement Canvas | Completada | v3 |
 | Plantilla 2 — Data Readiness Checklist | Completada | v1 |
 | Plantilla 3 — AI Product Canvas | Completada | v1 |
-| Plantilla 4 — Evaluación de resultados | Pendiente | — |
 
 ---
 
