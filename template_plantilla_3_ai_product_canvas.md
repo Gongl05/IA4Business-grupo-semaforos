@@ -212,7 +212,7 @@ Paso 6: → Conductor recibe: "Semáforo en ROJO / VERDE / AMARILLO" y actúa de
 **Versión visual (opcional pero recomendada):**
 
 ```
-Link o imagen: [pendiente — diagrama a desarrollar en draw.io o Miro]
+https://drive.google.com/file/d/1eHzOX-db_tPfh8beo718tSK1rh9xOPrK/view?usp=sharing
 ```
 
 ### 4.2 Humano en el circuito
