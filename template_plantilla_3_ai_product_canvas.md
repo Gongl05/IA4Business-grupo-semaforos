@@ -35,13 +35,7 @@ Nombre: ChromaVía
 > *Copia exactamente la declaración del Problem Statement Canvas. No parafrasear.*
 
 ```
-"Los conductores adultos con daltonismo rojo-verde tienen dificultad para identificar
-de forma autónoma y en tiempo real el estado de los semáforos convencionales durante
-la conducción porque la normativa de diseño semafórico peruana no exige criterios de
-accesibilidad cromática, lo que genera un retraso de reacción de hasta 1.2 segundos
-ante señales críticas, incrementando el riesgo de infracciones involuntarias, colisiones
-y pérdida de autonomía de conducción segura para los aproximadamente 200,000 conductores
-afectados en Lima Metropolitana."
+"Los conductores adultos con daltonismo rojo-verde tienen dificultad para identificar de forma autónoma y en tiempo real el estado de los semáforos convencionales durante la conducción porque la normativa de diseño semafórico peruana no exige criterios de accesibilidad cromática, lo que genera un retraso de reacción de hasta 1.2 segundos ante señales críticas, incrementando el riesgo de infracciones involuntarias, colisiones y pérdida de autonomía de conducción segura para los aproximadamente 200,000 conductores afectados en Lima Metropolitana."
 ```
 
 ### 1.3 Usuario principal
@@ -49,18 +43,23 @@ afectados en Lima Metropolitana."
 > *¿Quién usa el producto directamente? Sé específico — no "las empresas" sino el rol exacto.*
 
 ```
-Conductor adulto con daltonismo rojo-verde (deuteranopía o protanopía) que opera un
-vehículo privado en entornos urbanos de Lima Metropolitana y requiere asistencia autónoma
-para interpretar el estado de semáforos convencionales en tiempo real durante la conducción.
+Conductor adulto con daltonismo rojo-verde (deuteranopía o protanopía) que opera un vehículo privado en entornos urbanos de Lima Metropolitana y requiere asistencia autónoma para interpretar el estado de semáforos convencionales en tiempo real durante la conducción.
 ```
-
-### 1.4 Tipo de IA
 
 - [ ] IA Generativa
 - [x] ML Tradicional — Clasificación
 - [ ] ML Tradicional — Regresión
 - [ ] ML Tradicional — Clustering
+<<<<<<< HEAD
 - [ ] Combinación
+=======
+- [x] Combinación GenAI + ML
+
+> *Aclaración: en este proyecto la combinación es Visión Computacional
+> Supervisada (CNN) para clasificación + Síntesis de Voz automatizada
+> (TTS) para comunicación del resultado. El componente TTS opera sobre
+> etiquetas predefinidas — no se utiliza un modelo de lenguaje generativo.*
+>>>>>>> db3fdad (Plantilla 3 - correciones)
 
 ---
 
@@ -212,7 +211,7 @@ Paso 6: → Conductor recibe: "Semáforo en ROJO / VERDE / AMARILLO" y actúa de
 **Versión visual (opcional pero recomendada):**
 
 ```
-Link o imagen: [pendiente — diagrama a desarrollar en draw.io o Miro]
+https://drive.google.com/file/d/1eHzOX-db_tPfh8beo718tSK1rh9xOPrK/view?usp=sharing
 ```
 
 ### 4.2 Humano en el circuito
