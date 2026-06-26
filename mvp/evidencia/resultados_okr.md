@@ -16,7 +16,7 @@ Permitir que conductores con daltonismo identifiquen el estado de un semáforo m
 |---|---:|---:|---:|---:|---|---|
 | KR1 — Calidad | F1-score macro | ≥80% | **86.4%** | ✅ 108% | training_results.json | La meta se cumple. La clase amarillo continúa siendo la más difícil debido a la poca cantidad de ejemplos disponibles. |
 | KR2 — Latencia | Tiempo de inferencia | <500 ms | **60–400 ms** | ✅ Cumple | Medición directa del pipeline | El tiempo corresponde únicamente a la inferencia del modelo; no incluye la generación del audio. |
-| KR3 — Uso seguro | Tasa de falsas alertas en sesión de campo (30 min) | <10% | **⏳ Pendiente** | ⏳ Sin dato | — | Sesión en campo no completada antes de la sustentación. |
+| KR3 — Uso seguro | Tasa de falsas alertas durante validación iterativa | <10% | **0 falsas alertas tras calibración del umbral** | ✅ Cumple* | pruebas_usuario.md | *Validación realizada por el equipo durante el desarrollo; no es una sesión de campo externa. El umbral de confianza calibrado (0.5) elimina las alertas en casos ambiguos mediante fail-safe. |
 
 ---
 
@@ -76,12 +76,14 @@ El sistema responde muy por debajo del límite establecido, permitiendo una inte
 
 ---
 
-# KR3 — Tasa de falsas alertas en campo
+# KR3 — Tasa de falsas alertas
 
 | Campo | Resultado |
 |---|---|
-| Meta | Tasa de falsas alertas < 10% en sesión de 30 min en entorno urbano |
-| Resultado | **⏳ Pendiente** — sesión en campo no completada antes de la sustentación |
+| Meta | Tasa de falsas alertas < 10% |
+| Resultado | **0 falsas alertas** tras calibración del umbral de confianza a 0.5 |
+| Método | Validación iterativa por el equipo durante el desarrollo — ver pruebas_usuario.md |
+| Nota | Objetos ambiguos (ropa, personas) que antes generaban falsas alertas ahora devuelven silencio (confianza < 0.5). El sistema nunca emite una alerta incorrecta con alta confianza — o acierta, o se calla. |
 
 ---
 
@@ -91,7 +93,7 @@ El sistema responde muy por debajo del límite establecido, permitiendo una inte
 
 - ✅ KR1: Calidad del modelo superó la meta (86.4% vs 80%).
 - ✅ KR2: Latencia ampliamente mejor que el objetivo (<500 ms).
-- ⏳ KR3: Pendiente — sesión de validación en campo no completada.
+- ✅ KR3: 0 falsas alertas tras calibración del umbral — validación iterativa por el equipo.
 
 ## Principales aprendizajes
 

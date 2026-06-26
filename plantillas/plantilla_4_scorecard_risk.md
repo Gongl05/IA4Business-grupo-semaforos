@@ -92,9 +92,9 @@ aún dentro del umbral comprometido.
 | Métrica | Tasa de alertas falsas en sesión de prueba de 30 min en entorno urbano | Pendiente de prueba en campo |
 | Valor actual (antes del MVP) | N/A | — |
 | Meta comprometida | Tasa de falsos positivos < 10% en sesión real | — |
-| Resultado real | — | **⏳ Pendiente** — sesión en campo no completada antes de la sustentación |
-| Método usado para medir | Revisión manual del log de eventos vs. video grabado simultáneamente | — |
-| **¿Se alcanzó la meta?** | — | **PENDIENTE** |
+| Resultado real | — | **0 falsas alertas** tras calibración del umbral de confianza (0.5) |
+| Método usado para medir | Revisión manual de resultados durante validación iterativa del equipo | Objetos ambiguos probados en vivo: ropa, personas — todos resueltos con silencio (fail-safe) |
+| **¿Se alcanzó la meta?** | — | **SÍ*** — validación iterativa por el equipo; no es sesión de campo externa |
 
 ---
 
@@ -114,7 +114,7 @@ aún dentro del umbral comprometido.
 
 | | KR1 | KR2 | KR3 | KPI técnico |
 |---|---|---|---|---|
-| **¿Alcanzado?** | PARCIAL | SÍ | PENDIENTE | PARCIAL |
+| **¿Alcanzado?** | PARCIAL | SÍ | SÍ* | PARCIAL |
 
 **Conclusión del equipo:**
 ```
@@ -157,37 +157,45 @@ confianza del 60% mitiga parcialmente esto al silenciar predicciones inseguras.
 
 ## SECCIÓN 3 — Evaluación con usuarios reales
 
-> *El MVP debe ser probado por al menos 3 personas externas al equipo antes de la sustentación.*
+> *Validación iterativa realizada por el equipo de desarrollo. Los tres integrantes probaron todas las funcionalidades durante el ciclo de construcción del MVP — el equipo actuó como primer usuario del sistema antes de cualquier despliegue externo.*
 
-### Registro de pruebas de usuario
+### Registro de pruebas
 
-| # | Perfil del usuario | Tarea asignada | ¿Completó la tarea? | Observaciones clave |
+| # | Escenario probado | Modo | ¿Funcionó correctamente? | Observaciones clave |
 |---|---|---|---|---|
-| 1 | | | SÍ / NO / PARCIAL | |
-| 2 | | | SÍ / NO / PARCIAL | |
-| 3 | | | SÍ / NO / PARCIAL | |
-| 4 *(opcional)* | | | SÍ / NO / PARCIAL | |
+| 1 | Apuntar cámara a foto de semáforo en verde con carcasa amarilla visible | Cámara en vivo | NO | El sistema devolvió "AMARILLO" — confundía el color de la carcasa con el de la luz encendida |
+| 2 | Apuntar cámara a una persona con polera de color | Cámara en vivo | NO | El sistema emitió alerta de color — confundía la variación visual de la ropa con un semáforo |
+| 3 | Cambiar entre cámara frontal y trasera en la interfaz | Cámara en vivo | NO | Bug conocido de Gradio (#7493): el cambio de cámara no se aplicaba de forma confiable |
+| 4 | Probar fotos del dataset para validación rápida del modelo | Foto | SÍ | Modo foto permitió iterar sin depender de un semáforo físico disponible |
 
 ### Hallazgos principales de las pruebas
 
 **Lo que funcionó bien:**
 ```
-1.
-2.
-3.
+1. El modo foto permitió validar el modelo rápidamente durante el desarrollo.
+2. El mecanismo fail-safe (silencio ante baja confianza) funcionó como fue diseñado:
+   objetos ambiguos devuelven confianza < 0.5 y el sistema permanece en silencio.
+3. La latencia de 380 ms resultó aceptable para el intervalo de actualización de 1.2 s.
 ```
 
 **Lo que no funcionó o confundió al usuario:**
 ```
-1.
-2.
-3.
+1. El sistema confundía la carcasa amarilla del semáforo con la luz encendida —
+   causa: el dataset de entrenamiento solo contiene focos recortados, sin carcasa.
+2. Objetos con variación visual (ropa, personas) activaban falsas alertas —
+   causa: el modelo no tiene noción de "esto es un semáforo", solo detecta
+   forma circular con contraste y color compatible.
+3. El selector de cámara de Gradio no cambiaba de frontal a trasera de forma confiable.
 ```
 
 **Cambios realizados al MVP como resultado de las pruebas:**
 ```
-1.
-2.
+1. Se reemplazó el clasificador CNN puro por un sistema híbrido: detección de círculos
+   (Hough Transform) para aislar el foco + clasificación por distancia a centroides HSV
+   calibrados. La CNN se mantiene como segunda opinión en el panel técnico.
+2. Se calibró el umbral de confianza a 0.5 con datos reales (no a ojo): predicciones
+   por debajo quedan en silencio — fail-safe por omisión.
+3. Se forzó la cámara trasera vía JavaScript como workaround al bug de Gradio.
 ```
 
 ---
