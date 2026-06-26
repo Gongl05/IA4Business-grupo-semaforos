@@ -58,10 +58,8 @@ También puede utilizarse la cámara en vivo cuando exista un semáforo disponib
 - **F1-score macro:** 86.4%
 - **Accuracy:** 94.9%
 - **Latencia de inferencia:** 60–400 ms
-- **Pruebas con usuarios:** 4 participantes
-- **Falsas alertas observadas:** 0 durante las sesiones realizadas
 
-Las pruebas permitieron comprobar que el mecanismo **fail-safe** funciona correctamente.
+El mecanismo **fail-safe** funciona como fue diseñado: ante baja confianza, el sistema permanece en silencio.
 
 ---
 

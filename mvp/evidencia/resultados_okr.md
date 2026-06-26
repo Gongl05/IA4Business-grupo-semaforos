@@ -16,9 +16,7 @@ Permitir que conductores con daltonismo identifiquen el estado de un semáforo m
 |---|---:|---:|---:|---:|---|---|
 | KR1 — Calidad | F1-score macro | ≥80% | **86.4%** | ✅ 108% | training_results.json | La meta se cumple. La clase amarillo continúa siendo la más difícil debido a la poca cantidad de ejemplos disponibles. |
 | KR2 — Latencia | Tiempo de inferencia | <500 ms | **60–400 ms** | ✅ Cumple | Medición directa del pipeline | El tiempo corresponde únicamente a la inferencia del modelo; no incluye la generación del audio. |
-| KR3 — Uso seguro | Tasa de falsas alertas durante pruebas de usuario | <10% | **0 falsas alertas observadas en 4 sesiones (0%)** | ✅ Cumple* | pruebas_usuario.md | Muestra pequeña; el resultado sirve como evidencia inicial, no como validación estadística definitiva. |
-
-> **\*Nota:** El KR3 se considera cumplido para el alcance del MVP. Sin embargo, la cantidad de participantes aún es insuficiente para estimar el desempeño real del sistema en condiciones de uso masivo.
+| KR3 — Uso seguro | Tasa de falsas alertas en sesión de campo (30 min) | <10% | **⏳ Pendiente** | ⏳ Sin dato | — | Sesión en campo no completada antes de la sustentación. |
 
 ---
 
@@ -78,25 +76,12 @@ El sistema responde muy por debajo del límite establecido, permitiendo una inte
 
 ---
 
-# KR3 — Validación con usuarios
+# KR3 — Tasa de falsas alertas en campo
 
-Se realizaron pruebas funcionales con **4 participantes**, utilizando tanto el modo cámara como el modo fotografía.
-
-## Resultados principales
-
-- 4 de 4 participantes lograron completar la tarea.
-- No se registraron falsas alertas durante las pruebas.
-- Todos recibieron correctamente las alertas cuando el sistema detectó el estado del semáforo.
-- En escenarios de baja confianza el sistema permaneció en silencio, cumpliendo el comportamiento esperado del mecanismo fail-safe.
-
-## Problemas detectados
-
-- El silencio del sistema puede interpretarse como que la aplicación dejó de funcionar.
-- El permiso inicial de cámara no resulta evidente para algunos usuarios.
-- El movimiento del celular dificulta una detección rápida.
-- El modo Foto terminó siendo una alternativa útil cuando no existía un semáforo disponible para probar.
-
-Estas observaciones permitieron identificar mejoras concretas para una siguiente iteración del producto.
+| Campo | Resultado |
+|---|---|
+| Meta | Tasa de falsas alertas < 10% en sesión de 30 min en entorno urbano |
+| Resultado | **⏳ Pendiente** — sesión en campo no completada antes de la sustentación |
 
 ---
 
@@ -106,21 +91,17 @@ Estas observaciones permitieron identificar mejoras concretas para una siguiente
 
 - ✅ KR1: Calidad del modelo superó la meta (86.4% vs 80%).
 - ✅ KR2: Latencia ampliamente mejor que el objetivo (<500 ms).
-- ✅ KR3: No se observaron falsas alertas durante las pruebas con usuarios.
+- ⏳ KR3: Pendiente — sesión de validación en campo no completada.
 
 ## Principales aprendizajes
 
-Las pruebas con usuarios demostraron que el principal reto ya no es el algoritmo de clasificación, sino la experiencia de uso. La necesidad de comunicar claramente cuándo el sistema está escaneando, facilitar el permiso de cámara y orientar mejor al usuario fueron hallazgos que no habían aparecido durante el desarrollo técnico.
-
-Asimismo, la validación confirmó que el mecanismo fail-safe funciona como fue diseñado: ante incertidumbre, el sistema prefiere no emitir una alerta antes que entregar una indicación potencialmente incorrecta.
+La validación técnica del modelo confirmó que la arquitectura (CNN + fail-safe) es viable para tiempo real. El mecanismo fail-safe funciona como fue diseñado: ante incertidumbre, el sistema prefiere no emitir una alerta antes que entregar una indicación potencialmente incorrecta. La limitación principal es el desempeño en la clase amarillo (F1 62.1%), vinculada directamente a la ausencia de datos locales de Lima.
 
 ## Próximas mejoras
 
-- Incorporar un indicador permanente de "Escaneando...".
-- Mejorar el flujo inicial de permisos de cámara.
 - Entrenar el modelo con imágenes reales de semáforos de Lima.
 - Aumentar la cantidad de ejemplos de la clase amarillo.
-- Realizar una validación con una muestra significativamente mayor de usuarios.
+- Completar la sesión de validación en campo (KR3).
 
 ---
 

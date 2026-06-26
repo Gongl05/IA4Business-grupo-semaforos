@@ -92,9 +92,9 @@ aún dentro del umbral comprometido.
 | Métrica | Tasa de alertas falsas en sesión de prueba de 30 min en entorno urbano | Pendiente de prueba en campo |
 | Valor actual (antes del MVP) | N/A | — |
 | Meta comprometida | Tasa de falsos positivos < 10% en sesión real | — |
-| Resultado real | — | **0 falsas alertas en 4 sesiones (0%)** |
-| Método usado para medir | Revisión manual del log de eventos vs. video grabado simultáneamente | Observación directa durante las 4 sesiones de prueba de usuario (ver pruebas_usuario.md) |
-| **¿Se alcanzado la meta?** | — | **SÍ*** — muestra pequeña; resultado sirve como evidencia inicial, no como validación estadística definitiva |
+| Resultado real | — | **⏳ Pendiente** — sesión en campo no completada antes de la sustentación |
+| Método usado para medir | Revisión manual del log de eventos vs. video grabado simultáneamente | — |
+| **¿Se alcanzó la meta?** | — | **PENDIENTE** |
 
 ---
 
@@ -104,7 +104,7 @@ aún dentro del umbral comprometido.
 |---|---|---|
 | Métrica técnica | F1-score por clase + tasa de falsos positivos en campo | F1-score por clase medido en test offline |
 | Criterio mínimo aceptable | F1-score ≥ 80% en todas las clases; tasa de alertas falsas < 10% | — *(no cambia)* |
-| Resultado real | — | F1 rojo: 96.6% ✅ / F1 verde: 96.6% ✅ / F1 amarillo: 62.1% ❌ / Tasa alertas falsas: 0% en 4 sesiones ✅ |
+| Resultado real | — | F1 rojo: 96.6% ✅ / F1 verde: 96.6% ✅ / F1 amarillo: 62.1% ❌ / Tasa alertas falsas: pendiente ⏳ |
 | Método de medición | Reporte del framework de ML + log de sesión en campo | classification_report sobre conjunto de test |
 | **¿Es aceptable?** | — | **PARCIAL** — rojo y verde dentro del criterio; amarillo fuera del mínimo |
 
@@ -114,7 +114,7 @@ aún dentro del umbral comprometido.
 
 | | KR1 | KR2 | KR3 | KPI técnico |
 |---|---|---|---|---|
-| **¿Alcanzado?** | PARCIAL | SÍ | SÍ* | PARCIAL |
+| **¿Alcanzado?** | PARCIAL | SÍ | PENDIENTE | PARCIAL |
 
 **Conclusión del equipo:**
 ```
@@ -157,36 +157,37 @@ confianza del 60% mitiga parcialmente esto al silenciar predicciones inseguras.
 
 ## SECCIÓN 3 — Evaluación con usuarios reales
 
-> *El MVP fue probado con usuarios externos al equipo antes de la sustentación.*
+> *El MVP debe ser probado por al menos 3 personas externas al equipo antes de la sustentación.*
 
 ### Registro de pruebas de usuario
 
 | # | Perfil del usuario | Tarea asignada | ¿Completó la tarea? | Observaciones clave |
 |---|---|---|---|---|
-| 1 | Conductor adulto sin daltonismo diagnosticado, 28 años, Lima | Activar el sistema y verificar que las alertas de voz correspondan a imágenes de semáforos mostradas en pantalla | SÍ | El usuario encontró intuitiva la activación; notó que el amarillo no siempre generaba alerta y lo reportó como confuso |
-| 2 | Estudiante universitario, 22 años, sin experiencia previa con el sistema | Usar la demo web sin instrucciones del equipo y describir qué hace el sistema | SÍ | Identificó correctamente la función del sistema; cuestionó qué pasa "cuando no suena nada" — se le explicó el fail-safe |
-| 3 | Familiar del equipo con conocimiento de tráfico limeño, 45 años | Evaluar si el sistema sería útil para un conductor con daltonismo en Lima | PARCIAL | Señaló que en Lima el amarillo es especialmente importante por la conducta agresiva del tráfico; validó la utilidad del rojo/verde |
+| 1 | | | SÍ / NO / PARCIAL | |
+| 2 | | | SÍ / NO / PARCIAL | |
+| 3 | | | SÍ / NO / PARCIAL | |
+| 4 *(opcional)* | | | SÍ / NO / PARCIAL | |
 
 ### Hallazgos principales de las pruebas
 
 **Lo que funcionó bien:**
 ```
-1. La detección de rojo y verde fue consistente y los usuarios la percibieron como confiable.
-2. La interfaz web fue usada sin instrucciones — el flujo de activación es intuitivo.
-3. El concepto de "silencio cuando no hay certeza" (fail-safe) fue bien recibido una vez explicado.
+1.
+2.
+3.
 ```
 
 **Lo que no funcionó o confundió al usuario:**
 ```
-1. La ausencia de alerta en amarillo generó confusión — los usuarios esperaban siempre una respuesta.
-2. El tiempo de respuesta entre mostrar la imagen y escuchar la alerta fue percibido como lento en la demo web.
-3. Un usuario preguntó si el sistema funciona de noche — no fue posible demostrarlo en la sesión.
+1.
+2.
+3.
 ```
 
 **Cambios realizados al MVP como resultado de las pruebas:**
 ```
-1. Se agregó un mensaje de contexto en la interfaz ("SafeLight es asistencia, no reemplazo") para gestionar expectativas sobre el amarillo.
-2. Se documentó el comportamiento del fail-safe en el README_mvp.md para el evaluador.
+1.
+2.
 ```
 
 ---
