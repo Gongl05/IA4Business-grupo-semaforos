@@ -8,13 +8,13 @@
 
 ## Descripción del proyecto
 
-SafeLight es un sistema de asistencia para conductores adultos con daltonismo rojo-verde (deuteranopía o protanopía) que operan vehículos privados en Lima Metropolitana. El sistema clasifica el estado del semáforo visible en tiempo real mediante visión computacional y emite una alerta de voz al conductor ("Semáforo en ROJO / VERDE / AMARILLO") cuando la predicción supera el umbral de confianza definido. Si la confianza es insuficiente, el sistema permanece en silencio (fail-safe por omisión).
+SafeLight es un sistema de asistencia para conductores adultos con daltonismo rojo-verde (deuteranopía o protanopía) que operan vehículos privados en Lima Metropolitana. El sistema detecta semáforos en tiempo real mediante visión computacional y emite una alerta de voz al conductor ("Semáforo en ROJO / VERDE / AMARILLO") cuando la predicción es estable y supera el umbral de confianza. Si la confianza es insuficiente, el sistema permanece en silencio (fail-safe por omisión).
 
 **Tipo de IA:** ML Tradicional — Clasificación Supervisada (Visión Computacional)
-**Arquitectura:** Clasificador híbrido (detección de círculos Hough Transform + centroides HSV calibrados) con CNN como segunda opinión
-**Dataset:** Udacity Traffic Light Classifier
-**Síntesis de voz:** gTTS
-**MVP desplegado:** https://huggingface.co/spaces/Gonzagl5/safelight
+**Arquitectura:** COCO-SSD (TensorFlow.js, pre-entrenado en COCO) para detección + algoritmo propio de análisis de brillo por tercios verticales para clasificación de color
+**Dataset de evaluación:** 488 detecciones anotadas en Supabase (4 sesiones de prueba en campo en Lima)
+**Síntesis de voz:** Web Speech API (nativa en navegador)
+**MVP desplegado:** https://safelight-web.vercel.app
 
 ---
 
@@ -27,7 +27,7 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 | 1 | [plantilla_1_problem_statement.md](plantillas/plantilla_1_problem_statement.md) | **P — Problema** | Usuario afectado, problema específico, causa raíz, consecuencia medible y declaración formal del problema |
 | 2 | [plantilla_2_data_readiness.md](plantillas/plantilla_2_data_readiness.md) | **R — Recursos** | Inventario de datasets, evaluación de calidad, plan de resolución de bloqueantes y análisis de privacidad |
 | 3 | [plantilla_3_ai_product_canvas.md](plantillas/plantilla_3_ai_product_canvas.md) | **O — Oportunidad** | Identidad del producto, flujo, decisión Build/Buy/Integrate, alcance del MVP y OKRs |
-| 4 | [plantilla_4_scorecard_risk.md](plantillas/plantilla_4_scorecard_risk.md) | **P2 + T — Performance y Transparencia** | Scorecard de OKRs con resultados reales, validación iterativa y matriz de riesgos |
+| 4 | [plantilla_4_scorecard_risk.md](plantillas/plantilla_4_scorecard_risk.md) | **P2 + T — Performance y Transparencia** | Scorecard de OKRs con resultados reales, validación en campo y matriz de riesgos |
 
 ### MVP
 
@@ -35,14 +35,14 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 |---|---|
 | [mvp/README_mvp.md](mvp/README_mvp.md) | URL de despliegue e instrucciones de uso para el evaluador |
 | [mvp/evidencia/resultados_okr.md](mvp/evidencia/resultados_okr.md) | Métricas reales obtenidas vs. metas comprometidas en PC1 |
-| [mvp/evidencia/pruebas_usuario.md](mvp/evidencia/pruebas_usuario.md) | Registro de validación iterativa: hallazgos y cambios implementados |
+| [mvp/evidencia/pruebas_usuario.md](mvp/evidencia/pruebas_usuario.md) | Registro de pruebas en campo con 4 conductores: hallazgos y cambios implementados |
 
 ### Otros archivos
 
 | Archivo | Contenido |
 |---|---|
 | [resumen_ejecutivo.md](resumen_ejecutivo.md) | Síntesis del proyecto con problema, solución y OKRs |
-| [SafeLight_Sustentacion_AD5018.pdf](SafeLight_Sustentacion_AD5018.pdf) | Deck de sustentación PC2 |
+| [SafeLight_PC2-FINAL.pdf](SafeLight_PC2-FINAL.pdf) | Deck de sustentación PC2 (versión final) |
 
 ---
 
@@ -51,21 +51,23 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 | Entregable | Estado |
 |---|---|
 | Plantilla 1 — Problem Statement Canvas | ✅ Completada (v3) |
-| Plantilla 2 — Data Readiness Checklist | ✅ Completada (v1) |
-| Plantilla 3 — AI Product Canvas | ✅ Completada (v1) |
-| Plantilla 4 — Scorecard & Risk Matrix | ✅ Completada con datos reales |
-| MVP desplegado y accesible por URL | ✅ https://huggingface.co/spaces/Gonzagl5/safelight |
-| Evidencia de validación | ✅ 4 iteraciones documentadas en pruebas_usuario.md |
+| Plantilla 2 — Data Readiness Checklist | ✅ Completada (versión final) |
+| Plantilla 3 — AI Product Canvas | ✅ Completada (v2) |
+| Plantilla 4 — Scorecard & Risk Matrix | ✅ Completada con datos reales de campo |
+| MVP desplegado y accesible por URL | ✅ https://safelight-web.vercel.app |
+| Evidencia de validación en campo | ✅ 4 sesiones reales documentadas (187 alertas anotadas) |
 
 ---
 
 ## Resultados del MVP (PC2)
 
-| KR | Meta | Resultado |
-|---|---|---|
-| KR1 — F1-score macro | ≥ 80% | **86.4%** ✅ (amarillo: 62.1% ⚠️) |
-| KR2 — Latencia de inferencia | < 500 ms | **380 ms** ✅ |
-| KR3 — Tasa de falsas alertas | < 10% | **0%** tras calibración de umbral ✅ |
+| KR | Meta | Resultado | ¿Cumplió? |
+|---|---|---|---|
+| KR1 — F1-score macro | ≥ 80% | **83.9%** (rojo: 86.6% · verde: 85.1% · amarillo: 80.0%) | ✅ SÍ |
+| KR2 — Latencia total (captura → alerta de voz) | < 500 ms mediana | **470 ms** mediana (n=185, 4 sesiones) | ✅ SÍ |
+| KR3 — Tasa de falsas alertas | < 10% | **12.3%** global (23 de 187 alertas) | ❌ NO |
+
+**Interpretación:** El sistema acierta el color del semáforo en el 87.7% de las alertas emitidas y cumple la meta de latencia. Sin embargo, la tasa de alertas falsas del 12.3% superó el umbral comprometido del 10%, impulsada principalmente por la condición de alta luminosidad y reflejos (18.4%), frecuente en Lima. El MVP es funcional como prototipo académico pero requiere mejoras en robustez ante contraluz antes de operar sin supervisión activa del conductor.
 
 ---
 
@@ -75,15 +77,20 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 
 **Flujo del MVP:**
 ```
-Cámara apunta al semáforo
+Cámara captura frames en tiempo real (app web en el celular del conductor)
        ↓
-Detección de círculos (Hough Transform) → aísla el foco encendido
+COCO-SSD detecta objeto clase "traffic light" en el frame
        ↓
-Clasificación de color por centroides HSV calibrados
+¿Confianza ≥ 0.35 y tamaño del bbox ≥ 3.5% del frame?
+       ↓ SÍ                              ↓ NO
+Análisis de brillo en 3 tercios      Silencio (fail-safe)
+verticales del recorte del bbox
+(superior → ROJO / medio → AMARILLO / inferior → VERDE)
        ↓
-¿Confianza ≥ 0.5?
-       ↓ SÍ                    ↓ NO
-gTTS emite alerta de voz     Silencio (fail-safe)
+¿6 frames consecutivos del mismo color?
+       ↓ SÍ                              ↓ NO
+Web Speech API emite alerta de voz   Silencio (fail-safe)
+("Semáforo en ROJO / VERDE / AMARILLO")
        ↓
 Conductor recibe la alerta y actúa de forma autónoma
 ```
