@@ -36,6 +36,10 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 | [mvp/README_mvp.md](mvp/README_mvp.md) | URL de despliegue e instrucciones de uso para el evaluador |
 | [mvp/evidencia/resultados_okr.md](mvp/evidencia/resultados_okr.md) | Métricas reales obtenidas vs. metas comprometidas en PC1 |
 | [mvp/evidencia/pruebas_usuario.md](mvp/evidencia/pruebas_usuario.md) | Registro de pruebas en campo con 4 conductores: hallazgos y cambios implementados |
+| [mvp/evidencia/sessions_s.csv](mvp/evidencia/sessions_s.csv) | Export Supabase — 4 sesiones formales con métricas agregadas |
+| [mvp/evidencia/detections_s.csv](mvp/evidencia/detections_s.csv) | Export Supabase — 488 detecciones anotadas con `real_state` y `alerta_correcta` |
+| [mvp/evidencia/sessions_rows.csv](mvp/evidencia/sessions_rows.csv) | Export completo tabla `sessions` (incluye sesiones de prueba) |
+| [mvp/evidencia/detections_rows.csv](mvp/evidencia/detections_rows.csv) | Export completo tabla `detections` (incluye frames en base64) |
 
 ### Otros archivos
 

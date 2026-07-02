@@ -1,0 +1,5 @@
+id,session_name,started_at,ended_at,device_info,n_events,n_alerts,avg_latency_ms,median_latency_ms,p95_latency_ms;;;
+3be93189-ba32-59ef-8f4a-a9120284cfeb,urbana_diurna,2026-06-22T10:05:00,2026-06-22T10:39:00,Android 14; Pixel 7; Chrome 142; 640x480,122,46,512.1,457.46,1022.61
+c1fadfb0-e8d7-5d3c-8935-73aa0bf7bf4a,urbana_alta_luminosidad_reflejos,2026-06-23T12:18:00,2026-06-23T12:54:00,Android 13; Samsung A54; Chrome 142; 640x480,126,49,548.4,481.39,999.38
+3514c694-b74b-567a-816d-579be7c78030,urbana_atardecer,2026-06-24T17:42:00,2026-06-24T18:15:00,iOS 18; iPhone 14; Safari 18; 640x480,116,44,498.4,458.56,659.47
+33f9c1dd-1bea-55e8-a0fe-b3f6f3efc8a1,urbana_nocturna,2026-06-25T20:11:00,2026-06-25T20:48:00,Android 14; Xiaomi 13T; Chrome 142; 640x480,124,48,513.27,473.61,817.31
