@@ -42,7 +42,7 @@ SafeLight es un sistema de asistencia para conductores adultos con daltonismo ro
 | Archivo | Contenido |
 |---|---|
 | [resumen_ejecutivo.md](resumen_ejecutivo.md) | Síntesis del proyecto con problema, solución y OKRs |
-| [SafeLight_PC2-FINAL.pdf](SafeLight_PC2-FINAL.pdf) | Deck de sustentación PC2 (versión final) |
+| [presentacion_pc2.pdf](presentacion_pc2.pdf) | Deck de sustentación PC2 (versión final) |
 
 ---
 
