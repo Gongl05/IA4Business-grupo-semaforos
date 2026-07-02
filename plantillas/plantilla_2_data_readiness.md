@@ -9,7 +9,7 @@
 - Integrante 2: Gonzalo Gaviño
 - Integrante 3: Giuseppe Del Negro
 
-**Fecha de entrega:** 08/05/26
+**Fecha de entrega:** 30 de junio de 2026
 **Tipo de IA del proyecto:** ML Tradicional — Clasificación Supervisada (Visión Computacional / CNN)
 
 ---
@@ -22,6 +22,13 @@
 > capturado en Perú o Lima. El corpus peruano más cercano (UNMSM / Callao) fue recolectado
 > para investigación interna y nunca fue publicado abiertamente. Esto representa un
 > bloqueante real que se documenta en la Sección 3.
+>
+> **Nota de implementación final:** El sistema MVP final adoptó la estrategia Integrate
+> en lugar de Build: se utiliza COCO-SSD (TensorFlow.js, base MobileNetV2) como modelo
+> pre-entrenado en COCO sin fine-tuning propio. El dataset LISA fue usado únicamente
+> para entrenar el modelo YOLOv8-nano (descartado). Los datasets BSTLD, Brazilian UFU
+> e imágenes propias de Lima fueron evaluados en fase de planificación pero no utilizados
+> en el producto final.
 
 ---
 
@@ -31,28 +38,29 @@
 
 | # | Dataset | Fuente | Formato | N° de registros aprox. | ¿Tiene etiquetas? |
 |---|---|---|---|---|---|
-| 1 | LISA Traffic Light Dataset | UC San Diego — público en Kaggle | Imágenes + video / CSV de anotaciones | ~43,000 frames | SÍ (Go / Warning / Stop + variantes direccionales) |
-| 2 | Bosch Small Traffic Lights Dataset (BSTLD) | Bosch — público en Zenodo | Imágenes HDR convertidas a RGB / YAML de anotaciones | ~13,427 imágenes (~24,000 instancias) | SÍ (Red / Yellow / Green / Off) |
-| 3 | Brazilian Vertical Traffic Signs and Lights Dataset | Univ. Federal de Uberlândia, Brasil — público en Mendeley Data | Imágenes de alta resolución / XML (PASCAL VOC) | Múltiples frames curados, 16 clases anotadas | SÍ (Red light / Yellow light / Green light) |
+| 1 | LISA Traffic Light Dataset | UC San Diego — público en Kaggle | Imágenes + video / CSV de anotaciones | ~17,808 imágenes (50,542 bboxes) | SÍ (Go / Warning / Stop + variantes direccionales) — usado para entrenamiento de YOLOv8-nano (modelo descartado) |
+| 2 | COCO (implícito) | Microsoft COCO — pesos del modelo COCO-SSD | Pesos pre-entrenados TF.js | >200,000 imágenes con 80 clases incluyendo "traffic light" | SÍ — pesos del modelo final en producción; no curado por el equipo |
+| 3 | Detecciones propias en Supabase | Recopilación automática del sistema en producción | PostgreSQL / JPEG 200×120px | 488 detecciones anotadas en 4 sesiones formales | SÍ — anotación manual posterior (real_state, alerta_correcta) |
 
-**Justificación de la selección:** LISA y Bosch son los estándares académicos globales para
-esta tarea. El dataset brasileño fue seleccionado como proxy latinoamericano porque comparte
-condiciones visuales más cercanas al entorno limeño: infraestructura vial heterogénea,
-exposición solar extrema, oclusión por transporte de gran formato y coexistencia de
-semáforos LED modernos con equipos incandescentes obsoletos.
+**Justificación de la selección:** El modelo final COCO-SSD aprovecha los pesos pre-entrenados
+sobre COCO, que incluye la clase "traffic light" con suficiente diversidad de condiciones
+lumínicas globales. El dataset LISA fue usado en la fase experimental para entrenar YOLOv8-nano,
+que fue descartado por desequilibrio de clases (rojo: 25,876 bboxes vs amarillo: 1,516 bboxes),
+lo que causaba clasificación sistemática como "verde". Las detecciones propias recopiladas
+en Supabase permiten evaluación posterior con datos reales del entorno limeño.
 
 ---
 
 **Variable objetivo (target):**
 
-Estado actual del semáforo capturado por la cámara del vehículo, clasificado en una de las
-siguientes categorías: **rojo / amarillo / verde / semáforo no detectado**. La clasificación
-debe realizarse en tiempo real (inferencia por frame) con latencia menor a 200ms para ser
-accionable durante la conducción.
+Estado actual del semáforo capturado por la cámara del dispositivo, clasificado en una de las
+siguientes categorías: **rojo / amarillo / verde**. La ausencia de semáforo detectado no es
+una clase del modelo sino la ausencia de respuesta (silencio del sistema). La clasificación
+se realiza en tiempo real con latencia total mediana de 470ms desde captura hasta inicio de audio.
 
 **Tipo de problema confirmado:**
 
-- [x] Clasificación — predice una categoría (rojo / amarillo / verde / no detectado)
+- [x] Clasificación — predice una categoría (rojo / amarillo / verde)
 - [ ] Regresión — predice un número continuo
 - [ ] Clustering — agrupa sin etiquetas previas
 
@@ -60,49 +68,49 @@ accionable durante la conducción.
 
 ## SECCIÓN 2 — Evaluación de calidad con semáforo
 
-### Dataset / Fuente principal: LISA Traffic Light Dataset (UC San Diego)
+### Dataset / Fuente principal: LISA Traffic Light Dataset (UC San Diego) — usado en modelo experimental
 
 | Dimensión | Semáforo | Evidencia que respalda la evaluación | Plan de acción (si es 🟡 o 🔴) |
 |---|---|---|---|
 | **Disponibilidad** | 🟢 | Dataset público disponible en Kaggle. Descarga directa sin restricción de acceso. | No aplica |
-| **Volumen** | 🟢 | ~43,000 frames etiquetados, incluyendo 24,988 diurnos y 18,028 nocturnos. Volumen suficiente para entrenar una CNN de clasificación de 4 clases. | No aplica |
-| **Calidad** | 🟡 | Anotaciones completas y consistentes. Sin embargo, fue capturado en San Diego y Cincinnati (EE.UU.). No representa la infraestructura semafórica limeña ni las condiciones de la "panza de burro" (nubosidad costera difusa que aplana el contraste cromático). | Complementar con dataset brasileño y con imágenes propias del entorno local para ajuste fino. |
-| **Relevancia** | 🟡 | Perspectiva vehicular frontal coherente con el caso de uso. El contexto urbano difiere del latinoamericano: sin transporte informal de gran formato, sin contadores numéricos prominentes que el modelo pueda confundir como semáforos adicionales. | Usar como base de preentrenamiento. Validar el modelo con imágenes locales antes de declararlo listo. |
+| **Volumen** | 🟢 | ~17,808 imágenes con 50,542 bboxes. Desglose real: rojo 25,876 / amarillo 1,516 / verde resto. Desequilibrio severo entre clases. | No aplica — dataset descartado del modelo final |
+| **Calidad** | 🔴 | Desequilibrio crítico de clases: amarillo con solo 1,516 instancias vs rojo 25,876. El modelo YOLOv8-nano entrenado con este dataset clasificaba sistemáticamente como "verde" — causa directa del descarte. | Descartado. El modelo final usa COCO-SSD pre-entrenado sin fine-tuning. |
+| **Relevancia** | 🟡 | Perspectiva vehicular frontal coherente con el caso de uso. El contexto urbano difiere del latinoamericano. | No aplica — dataset descartado del modelo final |
 | **Legalidad** | 🟢 | Licencia CC BY-NC-SA 4.0. Uso académico y de investigación sin restricciones adicionales. | No aplica |
 
 ---
 
-### Dataset / Fuente secundaria: Bosch Small Traffic Lights Dataset (BSTLD)
+### Dataset / Fuente principal del modelo final: COCO (pesos pre-entrenados COCO-SSD)
 
 | Dimensión | Semáforo | Evidencia | Plan de acción |
 |---|---|---|---|
-| **Disponibilidad** | 🟢 | Disponible públicamente en Zenodo. Acceso confirmado para uso académico. | No aplica |
-| **Volumen** | 🟢 | ~13,427 imágenes con ~24,000 instancias anotadas. Mediana de ancho de semáforo: 8.6 píxeles — ideal para entrenar detección de objetos pequeños a distancia. | No aplica |
-| **Calidad** | 🟡 | Imágenes capturadas en HDR y convertidas a RGB, lo que fuerza al modelo a aprender patrones morfológicos en lugar de sobreajustarse a valores de color absolutos. Capturado en California — contexto visual diferente al local. | Usar principalmente para mejorar robustez ante variaciones lumínicas (contraluz, lluvia, noche). No usar como fuente representativa de infraestructura latinoamericana. |
-| **Relevancia** | 🟡 | Perspectiva vehicular consistente con el caso de uso. Diseño de semáforos estadounidense, no latinoamericano. | Usar como dataset de augmentación junto con LISA. |
-| **Legalidad** | 🟢 | Licencia de uso no comercial. Permitido para proyectos académicos. | No aplica |
+| **Disponibilidad** | 🟢 | Modelo COCO-SSD disponible como paquete TensorFlow.js (@tensorflow-models/coco-ssd). Integración directa sin descarga manual del dataset. | No aplica |
+| **Volumen** | 🟢 | COCO contiene más de 200,000 imágenes etiquetadas con 80 clases, incluyendo "traffic light" con representación suficiente para detección robusta. | No aplica |
+| **Calidad** | 🟢 | Modelo pre-entrenado ampliamente validado. Confianza promedio del detector en producción: 0.81. mAP reconocido en benchmarks académicos. | No aplica |
+| **Relevancia** | 🟡 | Modelo entrenado sobre imágenes globales; no específico para Lima. La determinación del color se realiza mediante análisis de brillo por tercios (lógica de aplicación), no por el modelo CNN. | Mitigado con filtro de bounding box (altura ≥ 3.5% del frame) y estabilidad de 6 frames consecutivos. |
+| **Legalidad** | 🟢 | Apache License 2.0. Uso comercial y académico permitido. | No aplica |
 
 ---
 
-### Dataset / Fuente terciaria: Brazilian Vertical Traffic Signs and Lights Dataset (UFU)
+### Dataset / Fuente de evaluación: Detecciones propias recopiladas en Supabase
 
 | Dimensión | Semáforo | Evidencia | Plan de acción |
 |---|---|---|---|
-| **Disponibilidad** | 🟢 | Disponible públicamente en Mendeley Data. Accesible también a través de Roboflow. | No aplica |
-| **Volumen** | 🟡 | Volumen más acotado que LISA o Bosch. Cubre 16 clases de señalética vial, con semáforos como subconjunto. | Combinar con LISA y Bosch para aumentar volumen total. Priorizar para el ajuste fino final del modelo. |
-| **Calidad** | 🟢 | Anotaciones en formato XML (PASCAL VOC). Validado en literatura académica: SSD + MobileNet supera 80% mAP sobre este dataset. | No aplica |
-| **Relevancia** | 🟢 | Es el dataset latinoamericano con mayor transferibilidad al contexto limeño: infraestructura heterogénea, exposición solar extrema, coexistencia de equipos modernos y obsoletos, oclusión por vehículos de gran formato. | No aplica |
-| **Legalidad** | 🟢 | Uso académico y de investigación. Publicado bajo acceso abierto en Mendeley Data. | No aplica |
+| **Disponibilidad** | 🟢 | Recopilación automática en PostgreSQL (Supabase). 488 detecciones en 4 sesiones formales documentadas. | No aplica |
+| **Volumen** | 🟡 | 488 detecciones y 187 alertas TTS. Suficiente para evaluación de KRs pero limitado para reentrenamiento. | Escalar con más sesiones si el proyecto continúa. |
+| **Calidad** | 🟢 | Cada detección incluye: predicted_state, confidence, bbox, tts_emitted, detection_time_ms, analysis_time_ms, latency_ms, frame_b64 (200×120px). Anotación manual posterior con real_state y alerta_correcta. | No aplica |
+| **Relevancia** | 🟢 | Capturado en entorno urbano real de Lima en 4 condiciones: diurna, alta luminosidad/reflejos, atardecer, nocturna. Representa el contexto de uso exacto del producto. | No aplica |
+| **Legalidad** | 🟢 | Datos propios del equipo. Frame JPEG en resolución reducida (200×120px) minimiza exposición de datos personales. | No aplica |
 
 ---
 
 ## SECCIÓN 3 — Plan de resolución de bloqueantes
 
-### Bloqueante 1 — CRÍTICO 🔴
+### Bloqueante 1 — CRÍTICO 🔴 (identificado en fase de planificación)
 
 ```
 Dimensión afectada:
-Relevancia (los tres datasets disponibles)
+Relevancia (los tres datasets evaluados inicialmente)
 
 Descripción del problema:
 No existe ningún dataset público de semáforos capturado en Lima o Perú.
@@ -118,27 +126,23 @@ modelo a fallas específicas del entorno limeño:
   incandescentes obsoletos y contadores numéricos que el modelo puede
   confundir con semáforos independientes.
 
-Acción concreta:
-Capturar entre 500 y 1,000 imágenes propias desde un vehículo en
-intersecciones urbanas de la ciudad objetivo, en distintas condiciones:
-mañana nublada, mediodía con sol cenital, noche urbana. Etiquetar con
-LabelImg (offline, gratuito) o Roboflow (online, capa gratuita). Usar
-estas imágenes exclusivamente para ajuste fino (fine-tuning) sobre el
-modelo preentrenado con LISA + Bosch + dataset brasileño.
+Resolución adoptada (Plan B ejecutado):
+En lugar de fine-tuning con datos locales, se adoptó el modelo COCO-SSD
+pre-entrenado (sin fine-tuning propio) como detector de objetos clase
+"traffic light", complementado con lógica de análisis de color por brillo
+en tercios verticales del bounding box. Esta arquitectura demostró
+robustez ante variaciones lumínicas del entorno limeño, con F1 macro
+de 83.9% en 488 detecciones reales.
+
+El desequilibrio de clases en LISA (rojo 25,876 vs amarillo 1,516 bboxes)
+fue la causa directa del descarte del modelo YOLOv8-nano entrenado.
 
 Responsable dentro del equipo:
-Gonzalo Gaviño (coordinación de captura en campo)
-Equipo completo (etiquetado manual)
+Gonzalo Gaviño (coordinación técnica)
+Equipo completo (sesiones de prueba en campo)
 
-Fecha límite de resolución:
-Definir según cronograma del curso — completar antes de la Fase M
-
-¿Qué pasa si no se resuelve? (Plan B):
-Aplicar Data Augmentation agresiva sobre el dataset brasileño:
-reducción artificial de contraste (simula "panza de burro"), oclusión
-aleatoria de zonas del semáforo (simula bloqueo por vehículos), y
-variación de brillo extremo (simula contraluz y noche). Solución menos
-robusta pero funcional para un prototipo académico.
+Estado final:
+RESUELTO mediante estrategia alternativa (COCO-SSD pre-entrenado).
 ```
 
 ---
@@ -147,11 +151,11 @@ robusta pero funcional para un prototipo académico.
 
 | Pregunta | Respuesta | Detalle |
 |---|---|---|
-| ¿Los datos contienen información personal de usuarios? | SÍ | Las imágenes de tráfico pueden contener rostros de personas y placas vehiculares. Los datasets públicos (LISA, Bosch, brasileño) fueron anonimizados por sus instituciones. Las imágenes propias a capturar requieren tratamiento previo. |
-| ¿Se cuenta con consentimiento explícito para usar esos datos? | N/A | Los datasets públicos fueron recolectados bajo las políticas de sus instituciones. Las imágenes propias en vía pública no requieren consentimiento individual en espacio público, pero deben ser anonimizadas antes del entrenamiento. |
-| ¿Los datos serán anonimizados antes de usarlos en el proyecto? | SÍ | Las imágenes propias capturadas en campo tendrán rostros y placas difuminados (blur) antes de incorporarlas al dataset de entrenamiento. |
-| ¿Aplica la Ley N° 29733 de Protección de Datos Personales del Perú? | SÍ | Si se capturan imágenes en vía pública con personas identificables, aplica la normativa peruana. Se mitigará mediante anonimización previa al entrenamiento. |
-| ¿Hay alguna restricción contractual o de confidencialidad? | NO | Los tres datasets públicos tienen licencias abiertas para uso académico. No hay datos corporativos ni confidenciales involucrados. |
+| ¿Los datos contienen información personal de usuarios? | SÍ | Las imágenes de tráfico capturadas por el sistema pueden contener rostros de personas y placas vehiculares. Los frames almacenados en Supabase son en resolución reducida (200×120px JPEG), lo que limita la identificabilidad. |
+| ¿Se cuenta con consentimiento explícito para usar esos datos? | N/A | Las sesiones de prueba fueron realizadas por miembros del equipo en vía pública. Las imágenes propias en vía pública no requieren consentimiento individual en espacio público bajo normativa peruana, pero deben minimizarse para protección de datos. |
+| ¿Los datos serán anonimizados antes de usarlos en el proyecto? | SÍ | Los frames almacenados en Supabase tienen resolución reducida (200×120px) que dificulta la identificación de personas. El frame completo no se almacena. |
+| ¿Aplica la Ley N° 29733 de Protección de Datos Personales del Perú? | SÍ | Si se capturan imágenes en vía pública con personas identificables, aplica la normativa peruana. Se mitiga mediante resolución reducida de los frames almacenados. |
+| ¿Hay alguna restricción contractual o de confidencialidad? | NO | Los datasets públicos usados tienen licencias abiertas para uso académico. Los datos propios son del equipo. No hay datos corporativos ni confidenciales involucrados. |
 
 ---
 
@@ -160,9 +164,9 @@ robusta pero funcional para un prototipo académico.
 | Pregunta de control | Respuesta |
 |---|---|
 | ¿Cada semáforo tiene evidencia concreta que lo respalda? | SÍ |
-| ¿Todos los 🔴 tienen un plan de acción con fecha y responsable? | SÍ — El bloqueante crítico de datos locales tiene plan definido con Plan B incluido. |
-| ¿El equipo verificó el acceso real a los datos antes de completar este checklist? | SÍ — LISA (Kaggle), Bosch (Zenodo) y dataset brasileño (Mendeley Data) tienen acceso público confirmado. |
-| ¿La estrategia de contexto o tipo de ML es coherente con los datos disponibles? | SÍ — Clasificación supervisada con CNN, usando preentrenamiento global + fine-tuning con datos locales, es coherente con los recursos disponibles. |
+| ¿Todos los 🔴 tienen un plan de acción con fecha y responsable? | SÍ — El bloqueante crítico de datos locales fue resuelto mediante estrategia alternativa (COCO-SSD pre-entrenado). |
+| ¿El equipo verificó el acceso real a los datos antes de completar este checklist? | SÍ — COCO-SSD disponible via npm (@tensorflow-models/coco-ssd); datos propios en Supabase con acceso confirmado. |
+| ¿La estrategia de contexto o tipo de ML es coherente con los datos disponibles? | SÍ — Uso de modelo pre-entrenado COCO-SSD + análisis de color por brillo es coherente con la ausencia de dataset local etiquetado. |
 
 > **Si alguna respuesta es NO → el checklist no está listo para entregar.**
 

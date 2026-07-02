@@ -9,7 +9,7 @@
 - Integrante 2: Gonzalo Gaviño
 - Integrante 3: Giuseppe Del Negro
 
-**Fecha de entrega:** 08/05/26
+**Fecha de entrega:** 30 de junio de 2026
 **Versión del canvas:** v3
 
 ---
@@ -107,11 +107,12 @@ Marca con una X la opción elegida:
 El problema requiere detectar y clasificar el estado del semáforo desde frames
 de video en tiempo real: tarea de clasificación supervisada con visión
 computacional (CNN). La comunicación del resultado al conductor mediante síntesis
-de voz (pyttsx3) es lógica de aplicación determinista sobre una de cuatro
-etiquetas fijas — no constituye un componente de IA Generativa. Un LLM añadiría
-latencia, variabilidad y costo innecesarios cuando la salida siempre es una de
-cuatro frases predefinidas. La IA Generativa no aplica porque el problema no
-involucra lenguaje natural abierto, conversación ni generación de contenido.
+de voz (Web Speech API) es lógica de aplicación determinista sobre una de tres
+etiquetas fijas (rojo / amarillo / verde) — no constituye un componente de IA
+Generativa. Un LLM añadiría latencia, variabilidad y costo innecesarios cuando
+la salida siempre es una de tres frases predefinidas. La IA Generativa no aplica
+porque el problema no involucra lenguaje natural abierto, conversación ni
+generación de contenido.
 ```
 
 ### Si elegiste ML Tradicional — especifica el tipo:
@@ -124,7 +125,7 @@ involucra lenguaje natural abierto, conversación ni generación de contenido.
 
 ```
 No aplica. El sistema usa únicamente ML Tradicional — Clasificación Supervisada.
-La síntesis de voz (pyttsx3) es lógica de aplicación determinista, no un
+La síntesis de voz (Web Speech API) es lógica de aplicación determinista, no un
 componente de IA adicional.
 ```
 
